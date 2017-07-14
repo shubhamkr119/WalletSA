@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/nav_show_records">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_all"
+                    android:icon="@android:drawable/ic_menu_zoom"
+                    android:title="@string/nav_all" />
+                <item
+                    android:id="@+id/nav_today"
+                    android:icon="@android:drawable/ic_menu_zoom"
+                    android:title="@string/nav_today" />
+                <item
+                    android:id="@+id/nav_date_range"
+                    android:icon="@android:drawable/ic_menu_zoom"
+                    android:title="@string/nav_date_range" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="@string/nav_settings">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_change_password"
+                    android:icon="@android:drawable/ic_menu_edit"
+                    android:title="@string/nav_change_password" />
+            </group>
+        </menu>
+    </item>
+</menu>
