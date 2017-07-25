@@ -61,7 +61,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     Cursor getData() {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
-            return db.rawQuery("select * from " + TABLE_NAME + " where date(column_date) = date('now') order by date(column_date) desc, rowid desc", null);
+            return db.rawQuery("select * from " + TABLE_NAME + " where date(column_date) = date('now', 'localtime') order by date(column_date) desc, rowid desc", null);
         }
         catch (Exception e) {
             e.printStackTrace();

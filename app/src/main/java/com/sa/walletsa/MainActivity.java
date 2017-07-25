@@ -37,8 +37,8 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     DatabaseHelper userDB;
-    String _current_view_;
-    Boolean doubleBackToExitPressedOnce = false;
+    String current_view;
+    Boolean doubleBackToExitPressedOnce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return;
             }
             navigationView.setNavigationItemSelectedListener(this);
-
-            _current_view_ = "All";
+            navigationView.setCheckedItem(R.id.nav_all);
 
             String _name_ = getSharedPreferences("preferences", MODE_PRIVATE).getString("name", null);
             if (null == _name_) {
@@ -141,7 +140,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
 
-            update_main_view();
+            current_view = "All";
+            doubleBackToExitPressedOnce = false;
         }
         catch (Exception e) {
             error_logger(_tag_, "Exception");
@@ -249,15 +249,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             int id = item.getItemId();
 
             if (id == R.id.nav_all) {
-                _current_view_ = "All";
+                current_view = "All";
                 update_main_view();
             }
             else if (id == R.id.nav_today) {
-                _current_view_ = "Today";
+                current_view = "Today";
                 update_main_view();
             }
             else if (id == R.id.nav_date_range) {
-                _current_view_ = "TBD";
+                current_view = "TBD";
                 update_main_view();
             }
             else if (id == R.id.nav_change_password) {
@@ -387,7 +387,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     update_main_view();
 
                     dialog.cancel();
-                    Toast.makeText(getApplicationContext(), desc + " deleted", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), desc + " deleted", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -416,7 +416,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 finish();
                 return;
             }
-            _textViewCurrentView_.setText(_current_view_);
+            if (null == current_view || (!current_view.equals("All") && !current_view.equals("Today") && !current_view.equals("TBD"))) {
+                error_logger(_tag_, "Unexpected current_view");
+                finish();
+                return;
+            }
+            _textViewCurrentView_.setText(current_view);
 
             int sum = 0;
 
@@ -428,7 +433,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ArrayList<CustomObject> objects = new ArrayList<>();
 
             Cursor rs;
-            switch (_current_view_) {
+            switch (current_view) {
                 case "Today":
                     rs = userDB.getData();
                     break;
