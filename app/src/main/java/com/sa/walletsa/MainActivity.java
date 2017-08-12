@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -280,78 +281,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toast.makeText(getApplicationContext(), "Unknown error", Toast.LENGTH_SHORT).show();
     }
 
-    private class CustomObject {
-
-        private String description;
-        private String date;
-        private String amount;
-
-        CustomObject(String description, String date, String amount) {
-            this.description = description;
-            this.date = date;
-            this.amount = amount;
-        }
-
-        String getDescription() {
-            return description;
-        }
-
-        String getDate() {
-            return date;
-        }
-
-        String getAmount() {
-            return amount;
-        }
-    }
-
-    private class CustomAdapter extends BaseAdapter {
-
-        private LayoutInflater inflater;
-        private ArrayList<CustomObject> objects;
-
-        private class ViewHolder {
-            TextView textViewDescription;
-            TextView textViewDate;
-            TextView textViewAmount;
-        }
-
-        CustomAdapter(Context context, ArrayList<CustomObject> objects) {
-            inflater = LayoutInflater.from(context);
-            this.objects = objects;
-        }
-
-        public int getCount() {
-            return objects.size();
-        }
-
-        public CustomObject getItem(int position) {
-            return objects.get(position);
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            if(convertView == null) {
-                holder = new ViewHolder();
-                convertView = inflater.inflate(R.layout.item_listview_main_activity, parent, false);
-                holder.textViewDescription = convertView.findViewById(R.id.textviewListviewMainActivityDescription);
-                holder.textViewDate = convertView.findViewById(R.id.textviewListviewMainActivityDate);
-                holder.textViewAmount = convertView.findViewById(R.id.textviewListviewMainActivityAmount);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            holder.textViewDescription.setText(objects.get(position).getDescription());
-            holder.textViewDate.setText(objects.get(position).getDate());
-            holder.textViewAmount.setText(objects.get(position).getAmount());
-            return convertView;
-        }
-    }
-
     private void onItemLongClickListViewMainActivity(int position) {
         final String _tag_ = "onBackPressed";
         try {
@@ -481,7 +410,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 finish();
                 return;
             }
-            _textViewSum_.setText(String.valueOf(sum));
+            if (0 > sum) {
+                sum = Math.abs(sum);
+                _textViewSum_.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorMaterialRedA700));
+            } else {
+                _textViewSum_.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorMaterialLightGreen800));
+            }
+            String _sum_string_ = "\u20B9 " + sum;
+            _textViewSum_.setText(_sum_string_);
 
             CustomAdapter customAdapter = new CustomAdapter(MainActivity.this, objects);
 
@@ -497,6 +433,86 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         catch (Exception e) {
             error_logger(_tag_, "Exception");
             e.printStackTrace();
+        }
+    }
+
+    private class CustomObject {
+
+        private String description;
+        private String date;
+        private String amount;
+
+        CustomObject(String description, String date, String amount) {
+            this.description = description;
+            this.date = date;
+            this.amount = amount;
+        }
+
+        String getDescription() {
+            return description;
+        }
+
+        String getDate() {
+            return date;
+        }
+
+        String getAmount() {
+            return amount;
+        }
+    }
+
+    private class CustomAdapter extends BaseAdapter {
+
+        private LayoutInflater inflater;
+        private ArrayList<CustomObject> objects;
+
+        CustomAdapter(Context context, ArrayList<CustomObject> objects) {
+            inflater = LayoutInflater.from(context);
+            this.objects = objects;
+        }
+
+        public int getCount() {
+            return objects.size();
+        }
+
+        public CustomObject getItem(int position) {
+            return objects.get(position);
+        }
+
+        public long getItemId(int position) {
+            return position;
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = inflater.inflate(R.layout.item_listview_main_activity, parent, false);
+                holder.textViewDescription = convertView.findViewById(R.id.textviewListviewMainActivityDescription);
+                holder.textViewDate = convertView.findViewById(R.id.textviewListviewMainActivityDate);
+                holder.textViewAmount = convertView.findViewById(R.id.textviewListviewMainActivityAmount);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            holder.textViewDescription.setText(objects.get(position).getDescription());
+            holder.textViewDate.setText(objects.get(position).getDate());
+            int _amount_ = Integer.parseInt(objects.get(position).getAmount());
+            if (0 > _amount_) {
+                _amount_ = Math.abs(_amount_);
+                holder.textViewAmount.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorMaterialRedA700));
+            } else {
+                holder.textViewAmount.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorMaterialLightGreen800));
+            }
+            String _amount_string_ = "\u20B9 " + _amount_;
+            holder.textViewAmount.setText(_amount_string_);
+            return convertView;
+        }
+
+        private class ViewHolder {
+            TextView textViewDescription;
+            TextView textViewDate;
+            TextView textViewAmount;
         }
     }
 

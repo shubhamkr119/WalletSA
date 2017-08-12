@@ -5,8 +5,11 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorMaterialBlueGrey900">#263238</color>
     <color name="colorMaterialBlueGrey300">#90a4ae</color>
+    <color name="colorMaterialGrey300">#e0e0e0</color>
     <color name="colorMaterialRed50">#ffebee</color>
     <color name="colorMaterialRed800">#c62828</color>
+    <color name="colorMaterialRedA700">#d50000</color>
+    <color name="colorMaterialLightGreen800">#558b2f</color>
     <color name="colorMaterialTeal500">#009688</color>
     <color name="colorMaterialDeepOrange400">#ff7043</color>
     <color name="colorMaterialRed400">#ef5350</color>
